@@ -120,7 +120,7 @@ def main():
                 st.success("Done")
 
     # Main content area for displaying chat messages
-    st.title("Punny AI Chatbot")
+    st.title("Conicle Prototype AI Coaching")
     st.write("อยากคุย!")
     st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 
