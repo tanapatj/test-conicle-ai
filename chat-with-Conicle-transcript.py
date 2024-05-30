@@ -17,6 +17,7 @@ credentials = service_account.Credentials.from_service_account_info(
 )
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
+
 def create_vector_database(category=None):
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/embedding-001")
@@ -58,8 +59,16 @@ def create_vector_database(category=None):
 def get_conversational_chain(prompt):
     vertexai.init(project='conicle-ai', credentials=credentials)
 
+    system_instruction = """ 
+You are an AI generative chatbot designed to act as a mentor and coach, providing domain-specific expertise, support, and guidance. Users will select an AI agent specializing in a particular domain (such as soft skills, data science, etc.) and interact with you to achieve their goals. 
+Your primary tasks are to understand the user's needs, help them set and achieve their goals, and provide emotional support throughout the process. 
+Importantly, you should first rely on the given knowledge base before using outside knowledge to answer the user's questions. 
+Use outside knowledge for additional examples or support when it is advisable and enhances the user’s understanding. 
+Additionally, you should be able to detect when the conversation is ending and suggest creating an assessment or quiz to help the user summarize their knowledge. 
+Your answer should be in Thai."""
+
     model = GenerativeModel(model_name="gemini-1.5-flash",
-                            system_instruction="You are an AI generative chatbot designed to act as a friendly and knowledgeable coach and mentor. Your primary goal is to provide helpful and accurate answers to users' questions while fostering a supportive and engaging conversation. You should encourage users to explore their thoughts and feelings, offering both practical advice and emotional support")
+                            system_instruction=system_instruction)
 
     response = model.generate_content(
         [prompt]
@@ -85,7 +94,7 @@ def clear_chat_history():
 
 def main():
     st.set_page_config(
-        page_title="Conicle Punny Chatbot",
+        page_title="Conicle Prototypeka Chatbot",
         page_icon="🤖"
     )
 
@@ -120,7 +129,7 @@ def main():
 
     if "messages" not in st.session_state.keys():
         st.session_state.messages = [
-            {"role": "assistant", "content": "เริ่มแชทกับ Conicle AI ได้เลย!"}]
+            {"role": "assistant", "content": "เริ่มแชทกับ Data Team AI ได้เลย!"}]
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
@@ -135,7 +144,7 @@ def main():
     if st.session_state.messages[-1]["role"] != "assistant":
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                response = user_input(user_question=prompt, category='Finance') #TODO Please specify the category here
+                response = user_input(user_question=prompt, category='Finance')  # TODO Please specify the category here
                 placeholder = st.empty()
                 full_response = ''
                 for item in response:
@@ -145,6 +154,7 @@ def main():
         if response is not None:
             message = {"role": "assistant", "content": full_response}
             st.session_state.messages.append(message)
+
 
 if __name__ == "__main__":
     main()
