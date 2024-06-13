@@ -63,10 +63,11 @@ def create_vector_database(category=None):
     return vector_store
 
 
-def get_conversational_chain(prompt):
+def get_conversational_chain(prompt, mode):
     vertexai.init(project='conicle-ai', credentials=credentials)
 
-    system_instruction = """ 
+    if mode == "Coach":
+        system_instruction = """ 
     You are an AI generative chatbot designed to act as a mentor and coach, providing domain-specific expertise, support, and guidance for a specific course. Users will select an AI agent specializing in a particular domain (such as soft skills, data science, etc.) and interact with you to enhance their learning experience and achieve their goals within this course.
 
 Your primary tasks are to:
@@ -80,6 +81,18 @@ Your primary tasks are to:
 7.Detect when the conversation is ending by identifying cues such as the user's summary statements, declining number of questions, or direct indications. Suggest creating an assessment or quiz to help the user summarize their knowledge. Provide guidelines for assessments that are relevant to the user's goals and the specific domain.
 Your responses should be in Thai, using language and tone appropriate for a coaching environment."""
 
+    if mode == "Planner":
+        system_instruction = """
+                You are an AI generative chatbot designed to help users build their own learning paths and personalities by selecting the content they want to learn. Users will select content categories and specific courses, and you will provide personalized insights based on their selections.
+
+                Your primary tasks are to:
+
+                Understand the user's learning preferences through their selected content.
+                Provide comprehensive analysis of the user's learning personality and behavior.
+                Suggest recommended learning strategies, future learning paths, and potential career paths.
+                Personalize responses based on the user's progress, preferences, and previous interactions.
+
+                Your answer should be in Thai."""
     model = GenerativeModel(model_name="gemini-1.5-flash",
                             system_instruction=system_instruction)
 
@@ -93,12 +106,17 @@ Your responses should be in Thai, using language and tone appropriate for a coac
     return response.text
 
 
-def user_input(user_question, category=None):
-    vector_store = create_vector_database(category)
-    doc = vector_store.similarity_search(user_question, k=6)
-    prompt = f"""Context:\n {doc}?\n Question: \n{user_question}\n"""
+def user_input(user_question, category=None, mode ="Coach"):
+    if mode == "Coach" and category:
+        vector_store = create_vector_database(category)
+        doc = vector_store.similarity_search(user_question, k=6)
+        prompt = f"""Context:\n {doc}?\n Question: \n{user_question}\n"""
+    else:
+        chat_history = "\n".join(
+            [f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages if msg['role'] != "system"])
+        prompt = f"Chat History:\n{chat_history}\nUser: {user_question}\nAssistant:"
 
-    response = get_conversational_chain(prompt)
+    response = get_conversational_chain(prompt, mode)
     return response
 
 
@@ -106,6 +124,8 @@ def clear_chat_history():
     st.session_state.messages = [
         {"role": "assistant", "content": "เริ่มแชทกับ Conicle AI ได้เลย!"}]
     st.session_state['category'] = None
+    st.session_state['initial_analysis_done'] = False
+
 
 
 def main():
@@ -114,9 +134,68 @@ def main():
         page_icon="🤖"
     )
 
+    categories = {
+        "Data Science": ["Introduction to Data Science", "Advanced Data Science Techniques"],
+        "Cloud Computing": ["Cloud Basics", "Advanced Cloud Architecture"],
+        "Cybersecurity": ["Network Security Essentials", "Ethical Hacking"],
+        "AI": ["Introduction to AI", "Reinforcement Learning"],
+        "Machine Learning": ["Machine Learning Basics", "Advanced Machine Learning"],
+        "Software Development": ["Introduction to Software Development", "Software Development Best Practices"]
+    }
+    # Initialize session state
+    if 'user_choices' not in st.session_state:
+        st.session_state.user_choices = {}
+
+    if 'messages' not in st.session_state:
+        st.session_state.messages = [
+            {"role": "assistant", "content": "เริ่มแชทกับ น้อง Brae ได้เลย!"}
+        ]
+
+    if 'initial_analysis_done' not in st.session_state:
+        st.session_state.initial_analysis_done = False
+
+
     # Sidebar for uploading PDF files
     with st.sidebar:
         st.title("Menu:")
+
+        mode = st.radio(
+            "Select AI Mode",
+            ("Coach", "Learning Path Builder")
+        )
+
+        if mode == "Learning Path Builder":
+            st.write("Select the categories and courses you are interested in:")
+            for category, courses in categories.items():
+                with st.expander(category):
+                    selected_courses = st.multiselect(f"Select courses in {category}:", courses, key=category)
+                    if selected_courses:
+                        st.session_state.user_choices[category] = selected_courses
+
+            if st.button("วิเคราะห์ฉันสิ"):
+                # Combine all selected courses into a single string
+                all_choices = []
+                for cat, courses in st.session_state.user_choices.items():
+                    for course in courses:
+                        all_choices.append(f"{course} in {cat}")
+                choices_str = "; ".join(all_choices)
+                prompt = f"""
+                       The user has selected the following courses and categories:
+                       {choices_str}
+
+                       Based on these selections, provide a comprehensive analysis of the user's learning personality and behavior. Include:
+                       1. Overall learning preferences and tendencies
+                       2. Recommended learning strategies
+                       3. Suggested future learning paths and resources
+                       4. Potential career paths or roles
+                       Your answer is in Thai.
+                       """
+
+                response = get_conversational_chain(prompt, mode)  # Pass the selected mode
+                st.session_state.user_choices['response'] = response
+                st.session_state.initial_analysis_done = True
+
+                # Append AI response to chat messages
 
     def get_category(category):
         st.session_state['category'] = category
@@ -136,19 +215,20 @@ def main():
                             - **Clear Chat History**: Reset the chat for a new session.
                         """)
 
-    st.sidebar.button('ConicleX Course IC Plain-Paper 1 Exam Preparation: Make It Easy with Mind Map ตอนที่ 2', on_click=get_category, args=('Finance',))
-    st.sidebar.button('ConicleX Course Mastering Prompt Engineering Design for ChatGPT AI Part 2', on_click=get_category, args=('Data Science',))
-    #st.sidebar.button('ConicleSpace-Grow (BETA)', on_click=get_category, args=('ConicleSpace-Grow',))
-    #st.sidebar.button('Conicle Piece of Cake', on_click=get_category, args=('Piece_of_cake',))
-    st.sidebar.button('ConicleX Course Cybersecurity Awareness', on_click=get_category, args=('course_123',))
-    st.sidebar.button('ConicleX The Mindset Makeover', on_click=get_category, args=('course_124',))
-    st.sidebar.button('ConicleX How to Increase Your Confidence', on_click=get_category, args=('course_125',))
-    st.sidebar.button('ConicleX Piece of Cake Good Communication', on_click=get_category, args=('course_126',))
-    st.sidebar.button('ConicleX Piece of Cake Happy Workplace', on_click=get_category, args=('course_127',))
-    st.sidebar.button('ConicleX Piece of Cake ISO', on_click=get_category, args=('course_128',))
-    st.sidebar.button('ConicleX Piece of Cake Strategic Thinking', on_click=get_category, args=('course_129',))
-    st.sidebar.button('ConicleX Piece of Cake คู่มือผู้จัดการพันธุ์ใหม่', on_click=get_category, args=('course_130',))
-    st.sidebar.button('ConicleX Piece of Cake เพิ่มยอดขาย', on_click=get_category, args=('course_131',))
+    if mode == "Coach":
+        st.sidebar.button('ConicleX Course IC Plain-Paper 1 Exam Preparation: Make It Easy with Mind Map ตอนที่ 2', on_click=get_category, args=('Finance',))
+        st.sidebar.button('ConicleX Course Mastering Prompt Engineering Design for ChatGPT AI Part 2', on_click=get_category, args=('Data Science',))
+        #st.sidebar.button('ConicleSpace-Grow (BETA)', on_click=get_category, args=('ConicleSpace-Grow',))
+        #st.sidebar.button('Conicle Piece of Cake', on_click=get_category, args=('Piece_of_cake',))
+        st.sidebar.button('ConicleX Course Cybersecurity Awareness', on_click=get_category, args=('course_123',))
+        st.sidebar.button('ConicleX The Mindset Makeover', on_click=get_category, args=('course_124',))
+        st.sidebar.button('ConicleX How to Increase Your Confidence', on_click=get_category, args=('course_125',))
+        st.sidebar.button('ConicleX Piece of Cake Good Communication', on_click=get_category, args=('course_126',))
+        st.sidebar.button('ConicleX Piece of Cake Happy Workplace', on_click=get_category, args=('course_127',))
+        st.sidebar.button('ConicleX Piece of Cake ISO', on_click=get_category, args=('course_128',))
+        st.sidebar.button('ConicleX Piece of Cake Strategic Thinking', on_click=get_category, args=('course_129',))
+        st.sidebar.button('ConicleX Piece of Cake คู่มือผู้จัดการพันธุ์ใหม่', on_click=get_category, args=('course_130',))
+        st.sidebar.button('ConicleX Piece of Cake เพิ่มยอดขาย', on_click=get_category, args=('course_131',))
 
     # Main content area for displaying chat messages
     # Load the image
@@ -183,29 +263,35 @@ def main():
         with st.chat_message(message["role"]):
             st.write(message["content"])
 
-    if prompt := st.chat_input():
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.write(prompt)
+    if not st.session_state.initial_analysis_done:
+        if prompt := st.chat_input():
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            with st.chat_message("user"):
+                st.write(prompt)
 
-    # Display chat messages and bot response
-    if st.session_state.messages[-1]["role"] != "assistant":
-        with st.chat_message("assistant"):
-            with st.spinner("Thinking..."):
-                if(st.session_state['category'] is not None):
-                    category = st.session_state['category']
-                    response = user_input(user_question=prompt, category=category) #TODO Please specify the category here
-                else:
-                    response = "เลือกหัวข้อที่จะถามก่อน"
-                placeholder = st.empty()
-                full_response = ''
-                for item in response:
-                    full_response += item
+        # Display chat messages and bot response
+        if st.session_state.messages[-1]["role"] != "assistant":
+            with st.chat_message("assistant"):
+                with st.spinner("Thinking..."):
+                    if st.session_state['category'] is not None:
+                        category = st.session_state['category']
+                        response = user_input(user_question=prompt, category=category, mode=mode)
+                    else:
+                        response = "เลือกหัวข้อที่จะถามก่อน"
+                    placeholder = st.empty()
+                    full_response = ''
+                    for item in response:
+                        full_response += item
+                        placeholder.markdown(full_response)
                     placeholder.markdown(full_response)
-                placeholder.markdown(full_response)
-        if response is not None:
-            message = {"role": "assistant", "content": full_response}
-            st.session_state.messages.append(message)
+            if response is not None:
+                message = {"role": "assistant", "content": full_response}
+                st.session_state.messages.append(message)
+
+        # Display the AI response if it exists
+    if 'response' in st.session_state.user_choices:
+        with st.chat_message("assistant"):
+            st.write(st.session_state.user_choices['response'])
 
 if __name__ == "__main__":
     main()
