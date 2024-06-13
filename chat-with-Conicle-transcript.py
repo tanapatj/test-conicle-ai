@@ -138,8 +138,17 @@ def main():
 
     st.sidebar.button('Finance', on_click=get_category, args=('Finance',))
     st.sidebar.button('Data Science', on_click=get_category, args=('Data Science',))
-    st.sidebar.button('ConicleSpace-Grow (BETA)', on_click=get_category, args=('ConicleSpace-Grow',))
-    st.sidebar.button('Conicle Piece of Cake', on_click=get_category, args=('Piece_of_cake',))
+    #st.sidebar.button('ConicleSpace-Grow (BETA)', on_click=get_category, args=('ConicleSpace-Grow',))
+    #st.sidebar.button('Conicle Piece of Cake', on_click=get_category, args=('Piece_of_cake',))
+    st.sidebar.button('ConicleX Course Cybersecurity Awareness', on_click=get_category, args=('course_123',))
+    st.sidebar.button('ConicleX The Mindset Makeover', on_click=get_category, args=('course_124',))
+    st.sidebar.button('ConicleX How to Increase Your Confidence', on_click=get_category, args=('course_125',))
+    st.sidebar.button('ConicleX Piece of Cake Good Communication', on_click=get_category, args=('course_126',))
+    st.sidebar.button('ConicleX Piece of Cake Happy Workplace', on_click=get_category, args=('course_127',))
+    st.sidebar.button('ConicleX Piece of Cake ISO', on_click=get_category, args=('course_128',))
+    st.sidebar.button('ConicleX Piece of Cake Strategic Thinking', on_click=get_category, args=('course_129',))
+    st.sidebar.button('ConicleX Piece of Cake คู่มือผู้จัดการพันธุ์ใหม่', on_click=get_category, args=('course_130',))
+    st.sidebar.button('ConicleX Piece of Cake เพิ่มยอดขาย', on_click=get_category, args=('course_131',))
 
     # Main content area for displaying chat messages
     # Load the image
