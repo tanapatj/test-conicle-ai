@@ -113,14 +113,14 @@ def main():
     # Sidebar for uploading PDF files
     with st.sidebar:
         st.title("Menu:")
-    
+
     def get_category(category):
         st.session_state['category'] = category
         st.write(category)
         return category
 
     st.sidebar.button('ConicleX Course IC Plain-Paper 1 Exam Preparation: Make It Easy with Mind Map ตอนที่ 2', on_click=get_category, args=('Finance',))
-    st.sidebar.button('ConicleX Course Mastering Prompt Engineering Design for ChatGPT AI', on_click=get_category, args=('Data Science',))
+    st.sidebar.button('Data Science', on_click=get_category, args=('Data Science',))
     #st.sidebar.button('ConicleSpace-Grow (BETA)', on_click=get_category, args=('ConicleSpace-Grow',))
     #st.sidebar.button('Conicle Piece of Cake', on_click=get_category, args=('Piece_of_cake',))
     st.sidebar.button('ConicleX Course Cybersecurity Awareness', on_click=get_category, args=('course_123',))
