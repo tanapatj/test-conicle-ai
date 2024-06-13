@@ -142,13 +142,12 @@ def main():
     image_path = 'Sorc-Ai.png'
     img_base64 = get_image_as_base64(image_path)
 
-    if st.button("ใช้ยังไง"):
+    if st.sidebar.button("ใช้ยังไง"):
         st.markdown("""
-                            ## How to Use This Project (โปรเจคนี้ทำมาเพื่อการทดลอง experiment, fine-tuning system instruction เพื่อนำไปใช้ใน AI Coaching)
-                            0. **Select AI Mode**: Coaching / Learning Path Builder
-                            1. **Select Category**: Choose the appropriate category you want to master. (เลือกหัวข้อที่ต้องการจะถูก Coach)
-                            2. **Chat**: Use the chat input to interact with the AI. (..)
-                            3. **Clear Chat History**: Use the clear chat history button to reset the chat. (Reset บทสนทนา)
+                            ## How to Use This Project (โปรเจคนี้ทำมาเพื่อการทดลอง experiment, fine-tuning system instruction เพื่อนำไปใช้ใน AI สืบไป)
+                            0. เลือกหัวข้อด้านซ้ายมือ
+                            1. แล้วคุย-ปรึกษา-ถามได้เลย
+                            2. **Clear Chat History**: Use the clear chat history button to reset the chat. (Reset บทสนทนา)
 
                             ### Features
                             - **Category Selection**: Filter documents by category.
