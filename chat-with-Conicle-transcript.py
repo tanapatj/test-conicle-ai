@@ -123,7 +123,7 @@ def main():
         st.write(category)
         return category
 
-    if st.sidebar.button("ใช้ยังไง"):
+    if st.sidebar.button("ใช้ยังไงใช่ป่ะ"):
         st.sidebar.markdown("""
                             ## How to Use This Project (โปรเจคนี้ทำมาเพื่อการทดลอง experiment, fine-tuning system instruction เพื่อนำไปใช้ใน AI สืบไป)
                             0. เลือกหัวข้อด้านซ้ายมือ
