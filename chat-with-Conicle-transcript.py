@@ -43,7 +43,11 @@ def create_vector_database(category=None):
     for file in glob.glob(dl_dir + "/*.txt"):
         if category is not None:
             print("CATEGORY CASE")
+            print(file)
+            print(category.lower())
             if category.lower() in file.lower():
+                print("correct")
+                print(file)
                 with open(file) as f:
                     doc_list.append(f.read())
         else:
