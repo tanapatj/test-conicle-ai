@@ -105,6 +105,7 @@ def user_input(user_question, category=None):
 def clear_chat_history():
     st.session_state.messages = [
         {"role": "assistant", "content": "เริ่มแชทกับ Conicle AI ได้เลย!"}]
+    st.session_state['category'] = None
 
 
 def main():
@@ -177,8 +178,11 @@ def main():
     if st.session_state.messages[-1]["role"] != "assistant":
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                category = st.session_state['category']
-                response = user_input(user_question=prompt, category=category) #TODO Please specify the category here
+                if(st.session_state['category'] is not None):
+                    category = st.session_state['category']
+                    response = user_input(user_question=prompt, category=category) #TODO Please specify the category here
+                else:
+                    response = "เลือกหัวข้อที่จะถามก่อน"
                 placeholder = st.empty()
                 full_response = ''
                 for item in response:
