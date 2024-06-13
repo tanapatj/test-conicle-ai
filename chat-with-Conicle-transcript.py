@@ -81,7 +81,7 @@ Your primary tasks are to:
 7.Detect when the conversation is ending by identifying cues such as the user's summary statements, declining number of questions, or direct indications. Suggest creating an assessment or quiz to help the user summarize their knowledge. Provide guidelines for assessments that are relevant to the user's goals and the specific domain.
 Your responses should be in Thai, using language and tone appropriate for a coaching environment."""
 
-    if mode == "Planner":
+    if mode == "Learning Path Builder":
         system_instruction = """
                 You are an AI generative chatbot designed to help users build their own learning paths and personalities by selecting the content they want to learn. Users will select content categories and specific courses, and you will provide personalized insights based on their selections.
 
@@ -158,6 +158,7 @@ def main():
     # Sidebar for uploading PDF files
     with st.sidebar:
         st.title("Menu:")
+
 
         mode = st.radio(
             "Select AI Mode",
