@@ -123,6 +123,19 @@ def main():
         st.write(category)
         return category
 
+    if st.sidebar.button("ใช้ยังไง"):
+        st.sidebar.markdown("""
+                            ## How to Use This Project (โปรเจคนี้ทำมาเพื่อการทดลอง experiment, fine-tuning system instruction เพื่อนำไปใช้ใน AI สืบไป)
+                            0. เลือกหัวข้อด้านซ้ายมือ
+                            1. แล้วคุย-ปรึกษา-ถามได้เลย
+                            2. **Clear Chat History**: Use the clear chat history button to reset the chat. (Reset บทสนทนา)
+
+                            ### Features
+                            - **Category Selection**: Filter documents by category.
+                            - **AI Chatbot**: Interact with the AI for guidance and support.
+                            - **Clear Chat History**: Reset the chat for a new session.
+                        """)
+
     st.sidebar.button('ConicleX Course IC Plain-Paper 1 Exam Preparation: Make It Easy with Mind Map ตอนที่ 2', on_click=get_category, args=('Finance',))
     st.sidebar.button('ConicleX Course Mastering Prompt Engineering Design for ChatGPT AI Part 2', on_click=get_category, args=('Data Science',))
     #st.sidebar.button('ConicleSpace-Grow (BETA)', on_click=get_category, args=('ConicleSpace-Grow',))
@@ -142,18 +155,7 @@ def main():
     image_path = 'Sorc-Ai.png'
     img_base64 = get_image_as_base64(image_path)
 
-    if st.sidebar.button("ใช้ยังไง"):
-        st.markdown("""
-                            ## How to Use This Project (โปรเจคนี้ทำมาเพื่อการทดลอง experiment, fine-tuning system instruction เพื่อนำไปใช้ใน AI สืบไป)
-                            0. เลือกหัวข้อด้านซ้ายมือ
-                            1. แล้วคุย-ปรึกษา-ถามได้เลย
-                            2. **Clear Chat History**: Use the clear chat history button to reset the chat. (Reset บทสนทนา)
 
-                            ### Features
-                            - **Category Selection**: Filter documents by category.
-                            - **AI Chatbot**: Interact with the AI for guidance and support.
-                            - **Clear Chat History**: Reset the chat for a new session.
-                        """)
     # Display the image next to the title
     st.markdown(
         f"""
