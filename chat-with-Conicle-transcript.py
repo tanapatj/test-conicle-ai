@@ -224,8 +224,9 @@ def main():
 
     if 'initial_analysis_done' not in st.session_state:
         st.session_state.initial_analysis_done = False
+    import pandas as pd
 
-
+    overall_content = pd.read_csv("Contentniverse.csv", usecols=['Course Name', 'Category'])
     # Sidebar for uploading PDF files
     with st.sidebar:
         st.title("Menu:")
@@ -260,6 +261,9 @@ def main():
                        2. Recommended learning strategies
                        3. Suggested future learning paths and resources
                        4. Potential career paths or roles
+                       There are the dataframe of courses and the schema consists of course_name and category, you can choose to recommend that suit to user's personality:
+                       {overall_content}
+                       5. Suggest suitable contents
                        Your answer is in Thai.
                        """
 
