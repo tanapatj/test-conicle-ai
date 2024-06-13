@@ -95,7 +95,7 @@ Your responses should be in Thai, using language and tone appropriate for a coac
 
 def user_input(user_question, category=None):
     vector_store = create_vector_database(category)
-    doc = vector_store.similarity_search(user_question, k=4)
+    doc = vector_store.similarity_search(user_question, k=6)
     prompt = f"""Context:\n {doc}?\n Question: \n{user_question}\n"""
 
     response = get_conversational_chain(prompt)
@@ -142,6 +142,19 @@ def main():
     image_path = 'Sorc-Ai.png'
     img_base64 = get_image_as_base64(image_path)
 
+    if st.button("ใช้ยังไง"):
+        st.markdown("""
+                            ## How to Use This Project (โปรเจคนี้ทำมาเพื่อการทดลอง experiment, fine-tuning system instruction เพื่อนำไปใช้ใน AI Coaching)
+                            0. **Select AI Mode**: Coaching / Learning Path Builder
+                            1. **Select Category**: Choose the appropriate category you want to master. (เลือกหัวข้อที่ต้องการจะถูก Coach)
+                            2. **Chat**: Use the chat input to interact with the AI. (..)
+                            3. **Clear Chat History**: Use the clear chat history button to reset the chat. (Reset บทสนทนา)
+
+                            ### Features
+                            - **Category Selection**: Filter documents by category.
+                            - **AI Chatbot**: Interact with the AI for guidance and support.
+                            - **Clear Chat History**: Reset the chat for a new session.
+                        """)
     # Display the image next to the title
     st.markdown(
         f"""
