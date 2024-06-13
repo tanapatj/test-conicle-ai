@@ -226,7 +226,7 @@ def main():
         st.session_state.initial_analysis_done = False
     import pandas as pd
 
-    overall_content = pd.read_csv("Contentniverse.csv", usecols=['Course Name', 'Category'])
+    overall_content = pd.read_csv("transcripts/Contentniverse.csv", usecols=['Course Name', 'Category'])
     print(overall_content.rows())
     # Sidebar for uploading PDF files
     with st.sidebar:
