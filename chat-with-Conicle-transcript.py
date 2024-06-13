@@ -227,6 +227,7 @@ def main():
     import pandas as pd
 
     overall_content = pd.read_csv("Contentniverse.csv", usecols=['Course Name', 'Category'])
+    print(overall_content.rows())
     # Sidebar for uploading PDF files
     with st.sidebar:
         st.title("Menu:")
