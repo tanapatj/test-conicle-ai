@@ -135,12 +135,83 @@ def main():
     )
 
     categories = {
-        "Data Science": ["Introduction to Data Science", "Advanced Data Science Techniques"],
-        "Cloud Computing": ["Cloud Basics", "Advanced Cloud Architecture"],
-        "Cybersecurity": ["Network Security Essentials", "Ethical Hacking"],
-        "AI": ["Introduction to AI", "Reinforcement Learning"],
-        "Machine Learning": ["Machine Learning Basics", "Advanced Machine Learning"],
-        "Software Development": ["Introduction to Software Development", "Software Development Best Practices"]
+        "Data Science": [
+            "Introduction to Data Science",
+            "Advanced Data Science Techniques",
+            "Data Analysis with Python",
+            "Machine Learning with R",
+            "Big Data Analytics"
+        ],
+        "Cloud Computing": [
+            "Cloud Basics",
+            "Advanced Cloud Architecture",
+            "AWS Certified Solutions Architect",
+            "Azure Fundamentals",
+            "Google Cloud Platform for Developers"
+        ],
+        "Cybersecurity": [
+            "Network Security Essentials",
+            "Ethical Hacking",
+            "Cybersecurity for Beginners",
+            "Advanced Cyber Threats",
+            "Certified Information Systems Security Professional (CISSP)"
+        ],
+        "AI": [
+            "Introduction to AI",
+            "Reinforcement Learning",
+            "Natural Language Processing",
+            "AI for Healthcare",
+            "AI Ethics and Policy"
+        ],
+        "Machine Learning": [
+            "Machine Learning Basics",
+            "Advanced Machine Learning",
+            "Deep Learning with TensorFlow",
+            "Computer Vision",
+            "Unsupervised Learning Techniques"
+        ],
+        "Software Development": [
+            "Introduction to Software Development",
+            "Software Development Best Practices",
+            "Full-Stack Web Development",
+            "Agile Project Management",
+            "DevOps Essentials"
+        ],
+        "Product Management": [
+            "Introduction to Product Management",
+            "Agile Product Management",
+            "Product Lifecycle Management",
+            "Market Research for Product Managers",
+            "Product Strategy and Roadmapping"
+        ],
+        "Finance": [
+            "Introduction to Finance",
+            "Corporate Finance",
+            "Financial Markets and Instruments",
+            "Investment Banking",
+            "Fintech and Innovation"
+        ],
+        "Marketing": [
+            "Introduction to Marketing",
+            "Digital Marketing",
+            "Content Marketing Strategy",
+            "SEO and SEM",
+            "Social Media Marketing"
+        ],
+        "Human Resources": [
+            "Introduction to Human Resources",
+            "Recruitment and Talent Acquisition",
+            "Employee Relations",
+            "HR Analytics",
+            "Compensation and Benefits"
+        ],
+        "Healthcare": [
+            "Introduction to Healthcare Management",
+            "Healthcare Data Analytics",
+            "Public Health",
+            "Healthcare Policy and Economics",
+            "Clinical Research and Trials"
+        ]
     }
     # Initialize session state
     if 'user_choices' not in st.session_state:
