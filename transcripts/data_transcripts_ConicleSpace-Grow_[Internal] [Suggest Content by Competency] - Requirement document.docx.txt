@@ -1,0 +1,574 @@
+﻿SOFTWARE REQUIREMENTS SPECIFICATION
+Provided For
+
+
+Suggest Content by Competency (My Competency Profile)
+
+
+Effect on Product Version 5.1
+Develop Version 5.1
+
+
+
+
+Date: 4 July 2023
+(Date : Finish Doc)
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+Table of contents
+
+
+
+
+Executive summary        2
+Document Reference        2
+Document Knowledge Management (KM)        3
+Statement of work        4
+In Scope (Functional)        4
+Dict        6
+Config        6
+Permission        6
+Out of Scope        6
+Limitation        7
+Technical Requirement (Non-functional)        7
+Technical Spec        7
+Data Module I        7
+API Document        7
+Impact Analysis / Concern (IF)        7
+User Impact        7
+System Impact        8
+User stories and requirements        9
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Executive summary
+Document Owner (PO)
+	Purinat Kittithornkul
+	Target Release 
+(Internal Release) (PO)
+	1 Aug 2023 
+	Document Status (PO)
+	Done
+	Wireframe (Design)
+	Story - https://www.figma.com/file/cNYUk9lr1ywcqoUe7Maf3X/%5B5.1-Grow%5D%5BImprove%5D-Suggest-content-by-competency-gap?type=whiteboard&node-id=92-137075&t=YXhijDgboOcbsq2W-0
+
+
+
+
+	Design (Design)
+	Design - 
+https://www.figma.com/file/KdGSUULhO5dqvl8jOvFfWF/%5BAIS%5D-Suggestion-Content?type=design&node-id=1-2&mode=design&t=RtrLkxsz9yN22sVX-0
+
+
+	Site map (Design)
+	-
+	Report Template (If)(PO)
+	-
+	Document Reference
+Requirement (PO)
+	Presentation -
+https://docs.google.com/presentation/d/1M0K9Uk0P2DQrCEfd1KMJaD-NBjhIHZLSXxBi2Qe79cQ/edit
+
+
+	WGLL (PX)
+	-
+	DDD (PO & SA)
+	-
+	API Docs
+	-
+	Other. (All)
+	-
+	Epic Card/ Ref. Card (PO)
+	https://app.clickup.com/t/860r8zrx8
+
+
+	
+
+Document Knowledge Management (KM)
+Release note (PX)
+	-
+	Manual (PX หรือ CSE)
+	-
+	
+
+
+
+
+
+
+
+
+
+ Team Member
+
+
+Product Owner
+	Purinat Kittithornkul
+	UX/UI Designer
+	Rattanawaree Tubnium
+
+
+	System Analyst
+	Chanon Sae-lee
+	Technical Expert
+	Natapong Sripeung
+	Squad Lead
+	Nattasak Lertpoompunya
+	Backend
+	Pattarakan Tykul
+	Frontend
+	Thaweevit Laoviwat (Leave)
+	IOS
+	Tyler Sai Han Lin Aung
+	Android
+	Kirathi (Leave)
+	QA
+	Phawat Rukitcharoen
+	
+
+
+
+________________
+
+
+
+
+Objective 
+
+
+ต้องการเพิ่มเติมให้พนักงานสามารถค้นหาเนื้อหาที่เกี่ยงข้องกับการพัฒนาความสามารถ (Competency) ตามระดับที่ตนเองยังขาดได้ นอกเหนือจากการเลือกดูเนื้อหาจากส่วนการสร้าง Action ใน Development Plan
+Statement of work
+In Scope (Functional)
+เพิ่มเติมให้พนักงานทั่วไป (User) สามารถได้รับการแนะนำเนื้อหาที่เกี่ยวข้องกับข้อมูลความสามารถตามระดับที่ตนเองยังขาดได้อยู่ โดยจะเพิ่มเติมข้อมูลในส่วน All Competencies ให้สามารถกดดูรายละเอียดเนื้อหาที่แนะนำเพิ่มเติมได้
+
+Note : แตกต่างจากการแนะนำเนื้อหาใน Feature : Development Plan ที่ใน Development Plan จะเป็นการแนะนำเนื้อหาเพื่อให้หัวหน้างานเลือกให้กับลูกน้อง แต่ใน Feature : Suggest Content by Competency นี้ จะเป็นการแนะนำเนื้อหาให้กับผู้ใช้โดยตรง และจะเป็นเพียงการเลือกดูข้อมูล ไม่สามารถเลือกให้เข้าไปอยู่ใน Development Plan ผ่านส่วนนี้ได้
+
+
+
+
+User (ฝั่งผู้ใช้งาน)
+
+
+Scope ID
+	Requirement
+	Note
+	User
+	US001
+	เมื่อผู้ใช้เข้าสู่เมนู Dashboard เลือกเข้าใช้งานแถบเมนู Growing และเข้าสู่การใช้งานแถบย่อย All Competencies ระบบจะแสดงปุ่ม Suggestion เพิ่มเติมขึ้นมา
+	
+
+	US002
+	หากผู้ใช้กดเข้าปุ่ม Suggestion แล้ว ระบบจะแสดงหน้ารายการของเนื้อหาที่เกี่ยวข้องกับข้อมูล Competency ซึ่งมีระดับความเชี่ยวชาญเป้าหมายตรงกับ Competency Gap ของผู้ใช้คนนั้นๆ
+	
+
+	US003
+	ระบบจะมีการแนะนำเนื้อหาอ้างอิงตาม Competency Gap ดังนี้
+1. กรณีพนักงานมี competency gap ที่มีข้อมูลทั้ง current proficiency level และ target proficiency level: เนื้อหาที่แนะนำจะ มี 2 แบบ คือ 
+- มี proficiency level และ target proficiency level ตรงกับข้อมูลพนักงานคนนั้น
+- มี proficiency level เป็น any level และ target proficiency level ตรงกับข้อมูลพนักงานคนนั้น
+* ตัวอย่างเช่น user มี competency gap ที่ current proficiency level = 1 และ target proficiency level = 2 
+➝ เนื้อหาที่แนะนำจะมี proficiency level = 1/ target proficiency level = 2 และ 
+➝ เนื้อหาที่แนะนำจะมี proficiency level = any level/ target proficiency level = 2 ด้วย
+   2. กรณีพนักงานคนนั้นๆ มี competency gap ที่ยังไม่มี proficiency level (no assessment result) แต่มี target proficiency level:เนื้อหาที่แนะนำจะมี proficiency level เป็น any level เท่านั้นและ target proficiency level ตรงกับที่ผูก user competency gap
+   * ตัวอย่างเช่น user มี competency gap  current proficiency level = no assessment result / target proficiency level = 2 ➝ เนื้อหาที่แนะนำจะมี proficiency level = any level และ target proficiency level = 2
+ระบบจะแสดงเนื้อหาทั้งหมดที่ตรงกับเงื่อนไขข้อใดข้อหนึ่ง โดยจะเรียงตาม Last Update ของเนื้อหา (ตามข้อมูลจากระบบ Learn) เนื้อหาที่มีวันเวลาที่อัปเดตล่าสุดจะอยู่ด้านบนสุด
+	อ้างอิงจาก UM020.3
+https://docs.google.com/document/d/1XzXF73kkpjHDBdukbre2J-lc7r8s7snY/edit?usp=sharing&ouid=110092286145457809119&rtpof=true&sd=true
+
+
+ที่ต่างกัน คือ เป็นข้อมูลที่แสดงที่ฝั่ง User ตรงๆ ไม่ใช่แสดงที่ Manager เหมือนของ Development Plan
+	US004
+	เนื้อหาที่นำมาแสดงจะยังไม่มีการกรองสิทธิ์ตาม User Permission และ Publish Status โดยจะแสดงรายการเนื้อหาทั้งหมดรวมถึงเนื้อหาที่อยู่ระหว่างการขอสร้าง (On Requested Content) 
+	อ้างอิงจาก US008 https://docs.google.com/document/d/1XzXF73kkpjHDBdukbre2J-lc7r8s7snY/edit?usp=sharing&ouid=110092286145457809119&rtpof=true&sd=true
+	US005
+	กรณีไม่มีเนื้อหาที่ตรงกับเงื่อนไขในการแนะนำ จะยังแสดงปุ่ม Suggestion ให้ผู้ใช้กดเข้ามาได้ แต่จะแสดงหน้าแบบไม่มีข้อมูล
+	
+
+	US006.1
+	ข้อมูลที่จะถูกนำมาแสดงในหน้า Suggestion ประกอบด้วย
+   * ชื่อ Competency
+   * ชื่อหน้า “Content suggestion” หรือเนื้อหาที่แนะนำ
+   * รายละเอียดของเนื้อหา ได้แก่ รูปปก (Cover), ชื่อและรหัสของเนื้อหา, ปุ่ม View สำหรับการกดเข้าดูรายละเอียดของเนื้อหา (Content Detail) 
+	
+
+	US006.2
+	เมื่อกดปุ่ม View จะแสดงรายละเอียดของเนื้อหา (Content Detail) ในแถบหน้าต่างใหม่
+	
+
+	US007
+	หากผู้ใช้เลือกดูเนื้อหาที่ไม่มีสิทธิ์ตาม User Permission จะแสดง Error : 403 No Permission หรือหากเนื้อหายังไม่ถูกเผยแพร่ (Publish) จะแสดง Error : 404 Page not found
+	
+
+	US008
+	ประเภทเนื้อหาที่รองรับ มีดังนี้
+   * Learning Material 6 ประเภท โดยจะแสดงชื่อดังนี้ 
+   * Video, Audio, External Video, Document, Article, Flash Card
+   * Course
+   * Class: โดยจะมี competency gap ตามกับ Class Program ที่เกี่ยวข้อง
+   * Live
+   * Test
+   * Activity
+ไม่มี content type: pathway, Survey, Content type ต่างจาก ConicleX, Public Learning, Public Request และ External Training
+
+
+โดยจะมีเทียบเท่ากับการแนะนำเนื้อหาบนระบบ Development Plan
+	
+
+	US009
+	แสดง Class program name ที่รายการเนื้อหาแนะนำที่ content type คือ Class
+	
+
+	
+
+
+
+Dict 
+
+
+No
+	Key
+	Description
+	ENG
+	THAI
+	1
+	content_suggestion
+	
+
+	Content suggestion
+	เนื้อหาที่แนะนำ
+	2
+	no_result_found
+	
+
+	No result found
+	ไม่พบผลลัพธ์
+	3
+	no_matching_content_found
+	
+
+	No matching contents found
+	ไม่พบเนื้อหาที่ตรงกับช่องว่างความสามารถ
+	
+
+
+Config 
+
+
+N/A
+
+
+Permission
+
+
+N/A
+
+
+Out of Scope
+Scope ID
+	Ref Scope ID(if)
+	 User Case
+	Note
+	OS001
+	AM001
+	-
+	
+
+	
+
+	
+
+	
+
+	
+
+	Limitation
+เนื้อหาที่นำแสดงจะยังไม่ถูกกรองตามสิทธิ์ของ User Permission และ Publish Status ทำให้เมื่อผู้ใช้กดเข้าดูรายละเอียดเนื้อหาจะแสดง Error : 403 No Permission และ 404 Page not found ตามลำดับ และผู้ใช้จะต้อง Login เข้ามาเพื่อใช้งานระบบใหม่อีกครั้ง
+เนื้อหาที่นำแสดงจะไม่รวมถึงประเภทเนื้อหาที่เป็น Pathway หรือเทียบเท่ากับบนระบบ Development Plan ที่ไม่แนะนำเนื้อหามาใส่ใน Development Action
+
+
+Impact Analysis / Concern (IF)
+User Impact 
+No
+	Module
+	Concern Point
+	Before
+	After
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+System Impact
+No
+	Module
+	Concern Point
+	Before
+	After
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+
+
+User stories and requirements
+Feature
+	User story
+	Acceptance Criteria
+	Requirement (Scope ID)
+	1. Installation
+	1.1 As a [user], I want to easily install the [app] on my mobile device
+	1.
+2.
+3.
+	AM001,
+AM002,
+AM003
+	1.2 As a [user], I want the [app] to work across my different devices
+	1.
+2.
+3.
+	
+
+	1.3 As a [user], I want to upgrade my app when there are new features available. 
+	
+
+	
+
+	2. Account creation
+	2.1 As a [user], I want to create an account, so that I can [xyz]
+	
+
+	
+
+	3. Login page
+	3.1 As a [user], I want to create 
+	
+
+	
+
+	3.2
+	
+
+	
+
+	4. Create and edit video
+	
+
+	
+
+	
+
+	5. Browse videos
+	5.1 As a [user], I want to search for videos using different filters
+	
+
+	
+
+	5.2 As a [user], I want videos recommended to me that meet my preferences
+	
+
+	
+
+	6. Manage profile
+	
+
+	
+
+	
+
+	7. Manage Settings
+	
+
+	
+
+	
+
+	8. Analytics
+	
+
+	
+
+	
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+การแยก doc ตัดจาก 
+   1. Effect version ที่ต่างกัน 
+   2. ทำเข้า Version เดิมแต่ Improve/add on  function โดยจะทำการ Duplicate และ Update ใหม่ทั้งหมด 
+
+
+Example 
+
+
+—------
+
+
+Original 
+Iden 4.10  Doc. Ver 1  
+Req. 1
+Req. 2  
+
+
+Copy doc Version เดิม  และ ทำการเพิ่ม Feature ใหม่ 
+Iden 4.10  Doc. Ver 1  
+Req. 1
+Req. 2  
+Req. 3 (Add On)
+*ต้องไปปรับ Doc เก่าว่าเลิกใช้
+
+
+—----------
+
+
+
+
+Version Control 
+
+
+Original > Organize   by feature > add shortcut template report
+Original > template  Export  file 
+
+
+Playlist > v1,v2 
+
+
+
+
+Floder by release 
+Add shortcut  
+
+
+Playlist KM
+Doc Version 1,2
+
+
+Next Action
+
+
+รวม  template Report
+วิธีการทำ Permission
+วิธีการทำ config
+Organize  by feature
+ตัวอย่าง  Step กรณีที่จะ implement Noti
+Flow การสร้าง Dict  (Front สร้าง Key , Product แปล Th/Eng )
+© 2020 Conicle. All rights reserved

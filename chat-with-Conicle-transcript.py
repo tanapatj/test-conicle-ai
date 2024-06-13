@@ -11,13 +11,16 @@ from langchain.vectorstores import LanceDB
 from io import StringIO
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from google.oauth2 import service_account
-
+from PIL import Image
+import base64
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets["gcp_service_account"]
 )
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
-
+def get_image_as_base64(image_path):
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode("utf-8")
 def create_vector_database(category=None):
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/embedding-001")
@@ -60,15 +63,24 @@ def get_conversational_chain(prompt):
     vertexai.init(project='conicle-ai', credentials=credentials)
 
     system_instruction = """ 
-You are an AI generative chatbot designed to act as a mentor and coach, providing domain-specific expertise, support, and guidance. Users will select an AI agent specializing in a particular domain (such as soft skills, data science, etc.) and interact with you to achieve their goals. 
-Your primary tasks are to understand the user's needs, help them set and achieve their goals, and provide emotional support throughout the process. 
-Importantly, you should first rely on the given knowledge base before using outside knowledge to answer the user's questions. 
-Use outside knowledge for additional examples or support when it is advisable and enhances the user’s understanding. 
-Additionally, you should be able to detect when the conversation is ending and suggest creating an assessment or quiz to help the user summarize their knowledge. 
+    You are an AI generative chatbot designed to act as a mentor and coach, providing domain-specific expertise, support, and guidance. Users will select an AI agent specializing in a particular domain (such as soft skills, data science, etc.) and interact with you to achieve their goals.
+
+Your primary tasks are to:
+
+Understand the user's needs through active listening and targeted questions.
+Help users set SMART (Specific, Measurable, Achievable, Relevant, Time-bound) goals.
+Provide emotional support by acknowledging user emotions and offering encouragement.
+Personalize responses based on the user's progress, preferences, and previous interactions.
+You should first rely on the given knowledge base before using outside knowledge to answer the user's questions. Use outside knowledge for additional examples or support when it is advisable and enhances the user’s understanding without deviating from the core knowledge base.
+
+Additionally, you should be able to detect when the conversation is ending by identifying cues such as the user's summary statements, declining number of questions, or direct indications. Suggest creating an assessment or quiz to help the user summarize their knowledge. Provide guidelines for assessments that are relevant to the user's goals and the specific domain.
+
 Your answer should be in Thai."""
 
     model = GenerativeModel(model_name="gemini-1.5-flash",
                             system_instruction=system_instruction)
+
+
 
     response = model.generate_content(
         [prompt]
@@ -94,7 +106,7 @@ def clear_chat_history():
 
 def main():
     st.set_page_config(
-        page_title="Conicle Prototypeka Chatbot",
+        page_title="Conicle Dos Chatbot",
         page_icon="🤖"
     )
 
@@ -119,17 +131,43 @@ def main():
                 create_vector_database(category='Finance')
                 st.success("Done")
 
+    def get_category(category):
+        st.session_state['category'] = category
+        st.write(category)
+        return category
+
+    st.sidebar.button('Finance', on_click=get_category, args=('Finance',))
+    st.sidebar.button('Data Science', on_click=get_category, args=('Data Science',))
+    st.sidebar.button('ConicleSpace-Grow (BETA)', on_click=get_category, args=('ConicleSpace-Grow',))
+    st.sidebar.button('Conicle Piece of Cake', on_click=get_category, args=('Piece_of_cake',))
+
     # Main content area for displaying chat messages
-    st.title("Conicle Prototype AI Coaching")
-    st.write("อยากคุย!")
+    # Load the image
+    image_path = 'Sorc-Ai.png'
+    img_base64 = get_image_as_base64(image_path)
+
+    # Display the image next to the title
+    st.markdown(
+        f"""
+            <div style="display: flex; align-items: center;">
+                <img src="data:image/png;base64,{img_base64}" style="width:50px;height:50px;margin-right:10px;">
+                <h1 style="display:inline;">AI Team Chatbot</h1>
+            </div>
+            """,
+        unsafe_allow_html=True
+    )
+    st.write("อยากสอนมากๆค่ะ")
     st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 
     # Chat input
     # Placeholder for chat messages
 
+    if 'category' not in st.session_state:
+        st.session_state['category'] = None
+
     if "messages" not in st.session_state.keys():
         st.session_state.messages = [
-            {"role": "assistant", "content": "เริ่มแชทกับ Data Team AI ได้เลย!"}]
+            {"role": "assistant", "content": "เริ่มแชทกับ Conicle AI ได้เลย!"}]
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
@@ -144,7 +182,8 @@ def main():
     if st.session_state.messages[-1]["role"] != "assistant":
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                response = user_input(user_question=prompt, category='Finance')  # TODO Please specify the category here
+                category = st.session_state['category']
+                response = user_input(user_question=prompt, category=category) #TODO Please specify the category here
                 placeholder = st.empty()
                 full_response = ''
                 for item in response:
@@ -154,7 +193,6 @@ def main():
         if response is not None:
             message = {"role": "assistant", "content": full_response}
             st.session_state.messages.append(message)
-
 
 if __name__ == "__main__":
     main()

@@ -11,7 +11,6 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 from io import StringIO
-
 load_dotenv()
 # os.getenv("GOOGLE_API_KEY")
 # genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
@@ -32,7 +31,7 @@ def get_pdf_text(pdf_docs):
 
 def get_text_chunks(text):
     splitter = RecursiveCharacterTextSplitter(
-        chunk_size=10000, chunk_overlap=1000)
+        chunk_size=100000, chunk_overlap=1000)
     chunks = splitter.split_text(text)
     return chunks  # list of strings
 
@@ -48,7 +47,7 @@ def get_vector_store(chunks):
 
 
 def get_conversational_chain():
-    prompt_template = """ให้ตอบภายในสามบรรทัด"\n\n Context:\n {context}?\n Question: \n{question}\n 
+    prompt_template = """ช่วยตอบคำถามให้ละเอียดที่สุดเท่าที่จะทำได้"\n\n Context:\n {context}?\n Question: \n{question}\n 
 
     Answer:
     """
@@ -65,7 +64,7 @@ def get_conversational_chain():
 
 def clear_chat_history():
     st.session_state.messages = [
-        {"role": "assistant", "content": "เริ่มแชทกับ Punny Conicle AI ได้เลย!"}]
+        {"role": "assistant", "content": "เริ่มแชทกับ Conicle AI ได้เลย!"}]
 
 
 def user_input(user_question):
@@ -121,7 +120,7 @@ def main():
 
     if "messages" not in st.session_state.keys():
         st.session_state.messages = [
-            {"role": "assistant", "content": "เริ่มแชทกับ Punny Conicle AI ได้เลย!"}]
+            {"role": "assistant", "content": "เริ่มแชทกับ Conicle AI ได้เลย!"}]
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
