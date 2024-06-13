@@ -113,24 +113,7 @@ def main():
     # Sidebar for uploading PDF files
     with st.sidebar:
         st.title("Menu:")
-        # txt_file = st.file_uploader(
-        #     "Upload your file(s) and Click on the Submit & Process Button", accept_multiple_files=False)
-        if st.button("ประมวลผล!"):
-            with st.spinner("Processing..."):
-                # stringio = StringIO(txt_file.getvalue().decode("utf-8"))
-                # raw_text = stringio.read()
-
-                # raw_text = ""
-                # for file in glob.glob(dl_dir + "/*.txt"):
-                #     print(file)
-                #
-                #     my_file = open(file)
-                #     raw_text += my_file.read()
-                # get_conversational_chain(prompt=)
-                # get_vector_store(text_chunks)
-                create_vector_database(category='Finance')
-                st.success("Done")
-
+    
     def get_category(category):
         st.session_state['category'] = category
         st.write(category)
