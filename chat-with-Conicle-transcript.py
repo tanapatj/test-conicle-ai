@@ -219,7 +219,7 @@ def main():
         """
         <style>
         .stApp {
-            background-image: url("wallpaper.jpeg");
+            background-image: url("wallpaper.jpg");
             background-size: cover;
         }
         </style>
