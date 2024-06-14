@@ -280,9 +280,9 @@ def main():
                        2. Recommended learning strategies
                        3. Suggested future learning paths and resources
                        4. Potential career paths or roles
-                       There are the dataframe of courses and the schema consists of course_name and category, you should choose to recommend contents that suit to user's personality but if there is no course that fit, you should say 'Sorry, based on your personality, I can't suggest existing contents':
+                       There are the dataframe of courses and the schema consists of course_name and category, you must choose to recommend contents that suit to user's personality but if there is no course that fit, you should say 'Sorry, based on your personality, I can't suggest existing contents':
                        {recommended_df}
-                       5. Suggest suitable contents and try to encourage user to explore those contents with friendly tone
+                       5. Suggest suitable contents based on this dataframe and try to encourage user to explore those contents with friendly tone
                        Your answer is in Thai.
                        """
 
