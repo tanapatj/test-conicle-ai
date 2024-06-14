@@ -13,6 +13,8 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from google.oauth2 import service_account
 from PIL import Image
 import base64
+import pandas as pd
+
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets["gcp_service_account"]
 )
@@ -224,10 +226,26 @@ def main():
 
     if 'initial_analysis_done' not in st.session_state:
         st.session_state.initial_analysis_done = False
-    import pandas as pd
 
-    overall_content = pd.read_csv("transcripts/Contentniverse.csv", usecols=['Course Name', 'Category'])
-    print(overall_content.rows())
+    #overall_content = pd.read_csv("transcripts/Contentniverse.csv", usecols=['Course Name', 'Category'])
+    recommend_categories = {
+        "Data Science": [
+            "Introduction to Data Science",
+            "Advanced Data Science Techniques",
+            "Data Analysis with Python",
+            "Machine Learning with R",
+            "Big Data Analytics"
+        ],
+        "Cloud Computing": [
+            "Cloud Basics",
+            "Advanced Cloud Architecture",
+            "AWS Certified Solutions Architect",
+            "Azure Fundamentals",
+            "Google Cloud Platform for Developers"
+        ]
+    }
+
+    recommended_df = pd.DataFrame(recommend_categories.items(), columns = ['category', 'course_name'])
     # Sidebar for uploading PDF files
     with st.sidebar:
         st.title("Menu:")
@@ -262,8 +280,8 @@ def main():
                        2. Recommended learning strategies
                        3. Suggested future learning paths and resources
                        4. Potential career paths or roles
-                       There are the dataframe of courses and the schema consists of course_name and category, you can choose to recommend that suit to user's personality:
-                       {overall_content}
+                       There are the dataframe of courses and the schema consists of course_name and category, you should choose to recommend contents that suit to user's personality but if there is no course that fit, you should say 'Sorry, based on your personality, I can't suggest existing contents':
+                       {recommended_df}
                        5. Suggest suitable contents
                        Your answer is in Thai.
                        """
