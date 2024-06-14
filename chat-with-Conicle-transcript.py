@@ -215,18 +215,7 @@ def main():
             "Clinical Research and Trials"
         ]
     }
-    bg_img = get_image_as_base64('wallpaper.jpeg')
-    st.markdown(
-        f"""
-            <style>
-            .stApp {{
-                background-image: url("data:image/png;base64,{bg_img}");
-                background-size: cover;
-            }}
-            </style>
-            """,
-        unsafe_allow_html=True
-    )
+    
     # Initialize session state
     if 'user_choices' not in st.session_state:
         st.session_state.user_choices = {}
