@@ -255,7 +255,7 @@ def main():
         mode = st.radio(
             "Select AI Mode",
             options=["Coach", "Personalized Learning Advisor"],
-            index=0 if st.session_state['mode'] is None else ["Coach", "Personalized Learning Advisor"].index(
+            index=-1 if st.session_state['mode'] is None else ["Coach", "Personalized Learning Advisor"].index(
                 st.session_state['mode'])
         )
         st.session_state['mode'] = mode
