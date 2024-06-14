@@ -215,6 +215,17 @@ def main():
             "Clinical Research and Trials"
         ]
     }
+    st.markdown(
+        """
+        <style>
+        .stApp {
+            background-image: url("wallpaper.jpeg");
+            background-size: cover;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
     # Initialize session state
     if 'user_choices' not in st.session_state:
         st.session_state.user_choices = {}
