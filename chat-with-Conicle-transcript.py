@@ -255,7 +255,7 @@ def main():
         mode = st.radio(
             "Select AI Mode",
             options=["Coach", "Personalized Learning Advisor"],
-            index=-1 if st.session_state['mode'] is None else ["Coach", "Personalized Learning Advisor"].index(
+            index=0 if st.session_state['mode'] is None else ["Coach", "Personalized Learning Advisor"].index(
                 st.session_state['mode'])
         )
         st.session_state['mode'] = mode
@@ -350,6 +350,7 @@ def main():
             """,
         unsafe_allow_html=True
     )
+    st.write("อยากสอนมากๆค่ะ")
     st.sidebar.button('Clear Chat History', on_click=clear_chat_history)
 
     # Chat input
