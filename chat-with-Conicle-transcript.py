@@ -272,19 +272,24 @@ def main():
                         all_choices.append(f"{course} in {cat}")
                 choices_str = "; ".join(all_choices)
                 prompt = f"""
-                       The user has selected the following courses and categories:
-                       {choices_str}
+    The user has selected the following courses and categories:
+    {choices_str}
 
-                       Based on these selections, provide a comprehensive analysis of the user's learning personality and behavior. Include:
-                       1. Overall learning preferences and tendencies
-                       2. Recommended learning strategies
-                       3. Suggested future learning paths and resources
-                       4. Potential career paths or roles
-                       There are the dataframe of courses and the schema consists of course_name and category, you must choose to recommend contents that suit to user's personality but if there is no course that fit, you should say 'Sorry, based on your personality, I can't suggest existing contents':
-                       {recommended_df}
-                       5. Suggest suitable contents based on this dataframe and try to encourage user to explore those contents with friendly tone
-                       Your answer is in Thai.
-                       """
+    Based on these selections, please provide a comprehensive analysis of the user's learning personality and behavior, including:
+
+    1. Overall learning preferences and tendencies
+    2. Recommended learning strategies
+    3. Suggested future learning paths and resources
+    4. Potential career paths or roles
+
+    You have access to a DataFrame of courses with the following schema: course_name, category. Use this DataFrame to recommend contents that align with the user's personality. If no suitable course is found, kindly respond with: "ขออภัย, จากบุคลิกภาพของคุณ, ฉันไม่สามารถแนะนำเนื้อหาที่มีอยู่ได้" (Sorry, based on your personality, I can't suggest existing contents).
+
+    5. Recommend suitable contents: Based on the DataFrame provided, suggest relevant courses and encourage the user to explore these contents on 'Coniverse' in a friendly and motivating tone. Start with an introduction like "จากสิ่งที่เรามีอยู่, เราแนะนำว่า..." (Based on what we have, we suggest...).
+
+    Your answer should be in Thai.
+
+    {recommended_df}
+    """
 
                 response = get_conversational_chain(prompt, mode)  # Pass the selected mode
                 st.session_state.user_choices['response'] = response
