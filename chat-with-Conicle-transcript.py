@@ -345,7 +345,7 @@ def main():
         f"""
             <div style="display: flex; align-items: center;">
                 <img src="data:image/png;base64,{img_base64}" style="width:50px;height:50px;margin-right:10px;">
-                <h1 style="display:inline;">AI Team Chatbot</h1>
+                <h1 style="display:inline;">AI Team Lab</h1>
             </div>
             """,
         unsafe_allow_html=True
