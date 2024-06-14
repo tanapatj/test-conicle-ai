@@ -226,7 +226,8 @@ def main():
 
     if 'initial_analysis_done' not in st.session_state:
         st.session_state.initial_analysis_done = False
-
+    if 'mode' not in st.session_state:
+        st.session_state['mode'] = None
     #overall_content = pd.read_csv("transcripts/Contentniverse.csv", usecols=['Course Name', 'Category'])
     recommend_categories = {
         "Data Science": [
@@ -250,11 +251,14 @@ def main():
     with st.sidebar:
         st.title("Menu:")
 
-
+        # Mode selection
         mode = st.radio(
             "Select AI Mode",
-            ("Coach", "Personalized Learning Advisor")
+            options=["Coach", "Personalized Learning Advisor"],
+            index=0 if st.session_state['mode'] is None else ["Coach", "Personalized Learning Advisor"].index(
+                st.session_state['mode'])
         )
+        st.session_state['mode'] = mode
 
         if mode == "Personalized Learning Advisor":
             st.write("Select the categories and courses you are interested in:")
